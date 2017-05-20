@@ -19,41 +19,42 @@
                 var filter = getURLParameter("filter");
                 var path = getURLParameter("path");
                 if(token==="" || vcstype==="" || user==="" || project==="" || build===""){
-                    printError("Missing Parameter.")
-                }else{
-                    var branchParam = (branch==="")?"":("&branch="+branch);
-                    var filterParam = (filter==="")?"":("&filter="+filter);
+                    printCustom("Missing Parameter.")
+                }else {
+                    var branchParam = (branch === "") ? "" : ("&branch=" + branch);
+                    var filterParam = (filter === "") ? "" : ("&filter=" + filter);
                     var url = "https://circleci.com/api/v1.1/project/{0}/{1}/{2}/{3}/artifacts?circle-token={4}{5}{6}"
                         .f(vcstype, user, project, build, token, branchParam, filterParam);
-                    $.get( url, function( data ) {
-                        var complete = '{"array":{0}}'.f(data);
-                        try{
-                            var obj = JSON.parse(complete);
-                            for (var i = 0; i < obj.array.length; i++) {
-                                if(obj.array[i].message){
-                                    printError("There was an error handling your request: "+obj.array[i].message);
-                                    return
+                    $.get({
+                        url: url,
+                        success: function (data) {
+                            var complete = '{"array":{0}}'.f(data);
+                            try {
+                                var obj = JSON.parse(complete);
+                                for (var i = 0; i < obj.array.length; i++) {
+                                    if (path === "") {
+                                        openUrl(obj.array[i].url, token);
+                                        return
+                                    }
+                                    if (obj.array[i].path === path) {
+                                        openUrl(obj.array[i].url, token);
+                                        return
+                                    }
                                 }
-                                if(path===""){
-                                    openUrl(obj.array[i].url, token);
-                                    printError("No path provided, using first match!");
-                                    return
-                                }
-                                if(obj.array[i].path === path) {
-                                    openUrl(obj.array[i].url, token);
-                                    printError("");
-                                    return
-                                }
+                            } catch (err) {
+                                printCustom("<b>Could not parse response</b>: {0}<br><span style='text-align: left; color: white;'>Response:<br>{1}</span>".f(err, data));
                             }
-                        } catch(err) {
-                            printError("<b>Could not parse response</b>: {0}<br><span style='text-align: left; color: white;'>Response:<br>{1}</span>".f(err, data));
-                        }
 
-                        printError("Could not find provided path.")
+                            printCustom("Could not find provided path.")
+                        },
+                        error: function (response) {
+                            printCustom("There was an error handling your request.");
+                        }
                     });
                 }
             });
         </script>
-        <p id="Error">You need to activate Javascript in order to use this site.</p>
+        <p id="Message">You need to activate Javascript in order to use this site.</p>
+        <div id='footer'>See the documentation on <a href='http://github.com/FelixGail/CircleCIArtifactProvider'>github.com/FelixGail/CricleCIArtifactProvider</a> for more Information.</div>
     </body>
 </html>

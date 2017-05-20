@@ -14,16 +14,18 @@ String.prototype.format = String.prototype.f = function() {
     return s;
 };
 
-function printError(error) {
-    var toAdd = "<p>See the documentation on <a href='http://github.com/FelixGail/CircleCIArtifactProvider'>github.com/FelixGail/CricleCIArtifactProvider</a> for more Information.</p>";
-    var element = $("#Error");
-    if(element) {
-        $("body").html("<p class='Error'>{0}{1}</p>".f(error, toAdd));
+function printCustom(error) {
+    var element = $("#Message");
+    if(!element) {
+        $("body").html("<p class='Message'>{0}</p><div id='footer'>See the documentation on <a href='http://github.com/FelixGail/CircleCIArtifactProvider'>github.com/FelixGail/CricleCIArtifactProvider</a> for more Information.</div>".f(error));
     }else{
-        element.html("{0}{1}".f(error, toAdd));
+        element.html(error);
     }
 }
 
 function openUrl(path, token) {
-    window.location.replace("{0}?circle-token={1}".f(path, token));
+    var url = "{0}?circle-token={1}".f(path, token)
+    window.location.replace(url);
+    printCustom("<span style='color:white;'>Your download should start shortly. If not download it <a href='{0}'>here</a> manually.</span>"
+        .f(url));
 }
