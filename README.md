@@ -1,6 +1,8 @@
 ## CircleCIArtifactProvider
 Allows to directly download artifacts from circle ci.
 
+Accessible at [https://FelixGail.github.io/CircleCIArtifactProvider/index.html](https://FelixGail.github.io/CircleCIArtifactProvider/index.html)
+
 ### Usage
 Add parameters to github.io url.
 
@@ -17,5 +19,5 @@ Add parameters to github.io url.
 
 ##### URL
 ```
-https://FelixGail.github.io/CircleCIArtifactProvider?[PARAM1]=[VALUE1]&[PARAM2]=[VALUE2] (...)
+https://FelixGail.github.io/CircleCIArtifactProvider/index.html?[PARAM1]=[VALUE1]&[PARAM2]=[VALUE2] (...)
 ```
