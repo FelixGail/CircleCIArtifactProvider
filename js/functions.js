@@ -26,6 +26,6 @@ function printCustom(error) {
 function openUrl(path, token) {
     var url = "{0}?circle-token={1}".f(path, token)
     window.location.replace(url);
-    printCustom("<span style='color:white;'>Your download should start shortly. If not download it <a href='{0}'>here</a> manually.</span>"
+    printCustom("<span style='color:#505050;'>Your download should start shortly. If not download it <a href='{0}'>here</a> manually.</span>"
         .f(url));
 }
